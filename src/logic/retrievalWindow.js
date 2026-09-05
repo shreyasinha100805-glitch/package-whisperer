@@ -1,5 +1,5 @@
 const pendingDeliveries = new Map(); // deviceId -> { deliveredAt, timer, escalateCallback }
-const RETRIEVAL_WINDOW_MS = 4 * 60 * 60 * 1000; // 4 hours
+const RETRIEVAL_WINDOW_MS = 10 * 1000; // 4 hours
 const SHORT_VISIT_THRESHOLD_MS = 60 * 1000; // 60 seconds
 
 function startRetrievalWindow(deviceId, deliveredAt, onEscalate) {

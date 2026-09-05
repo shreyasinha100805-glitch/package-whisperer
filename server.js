@@ -19,9 +19,11 @@ async function handleEscalation(deviceId, deliveredAt) {
   console.log(`⚠️  ESCALATION: Package at ${deviceId} not retrieved. Generating caretaker digest...`);
   try {
     const digest = await generateCaretakerDigest(deviceId, deliveredAt);
-    console.log(`📨 Caretaker digest: ${digest}`);
+    console.log(`📨 Caretaker digest (AI-generated): ${digest}`);
   } catch (err) {
-    console.error('Failed to generate digest:', err.message);
+    console.error('Bedrock call failed, using fallback digest:', err.message);
+    const fallback = `A package delivered at ${deviceId} on ${new Date(deliveredAt).toLocaleString()} has not been picked up yet. Please check when you get a chance.`;
+    console.log(`📨 Caretaker digest (fallback): ${fallback}`);
   }
 }
 
