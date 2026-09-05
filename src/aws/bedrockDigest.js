@@ -11,8 +11,8 @@ const client = new BedrockRuntimeClient({
 
 const MODEL_ID = 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
 
-async function generateCaretakerDigest(deviceId, deliveredAt) {
-const prompt = `A package was delivered at location "${deviceId}" at ${new Date(deliveredAt).toLocaleString()}. It has not been retrieved within the expected window. Write a short, warm, plain-language 1-2 sentence notification for a family caretaker, letting them know the package is still waiting and hasn't been picked up. Do not be alarming, just informative. Respond with ONLY the notification text — no headers, no titles, no markdown formatting, just the plain sentence(s).`;
+async function generateCaretakerDigest(deviceLabel, deliveredAt) {
+  const prompt = `A package was delivered at "${deviceLabel}" at ${new Date(deliveredAt).toLocaleString()}. It has not been retrieved within the expected window. Write a short, warm, plain-language 1-2 sentence notification for a family caretaker, letting them know the package is still waiting and hasn't been picked up. Do not be alarming, just informative. Respond with ONLY the notification text — no headers, no titles, no markdown formatting, just the plain sentence(s).`;
 
   const command = new InvokeModelCommand({
     modelId: MODEL_ID,
