@@ -1,12 +1,13 @@
-const pendingDeliveries = new Map(); // deviceId -> { deliveredAt, timer, escalateCallback }
-const RETRIEVAL_WINDOW_MS = 10 * 1000; // 4 hours
+const pendingDeliveries = new Map(); // deviceId -> { deliveredAt, timer }
+
+const RETRIEVAL_WINDOW_MS = 4 * 60 * 60 * 1000; // 4 hours
 const SHORT_VISIT_THRESHOLD_MS = 60 * 1000; // 60 seconds
 
 function startRetrievalWindow(deviceId, deliveredAt, onEscalate) {
   // Clear any existing timer for this device first
- if (pendingDeliveries.has(deviceId)) {
-  clearTimeout(pendingDeliveries.get(deviceId).timer);
-}
+  if (pendingDeliveries.has(deviceId)) {
+    clearTimeout(pendingDeliveries.get(deviceId).timer);
+  }
 
   const timer = setTimeout(() => {
     if (pendingDeliveries.has(deviceId)) {
@@ -34,4 +35,12 @@ function checkRetrieval(deviceId, motionTimestamp, visitDurationMs) {
   return false;
 }
 
-module.exports = { startRetrievalWindow, checkRetrieval, RETRIEVAL_WINDOW_MS };
+function manualResolve(deviceId) {
+  const pending = pendingDeliveries.get(deviceId);
+  if (!pending) return false;
+  clearTimeout(pending.timer);
+  pendingDeliveries.delete(deviceId);
+  return true;
+}
+
+module.exports = { startRetrievalWindow, checkRetrieval, manualResolve, RETRIEVAL_WINDOW_MS };

@@ -11,8 +11,15 @@ const client = new BedrockRuntimeClient({
 
 const MODEL_ID = 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
 
-async function generateCaretakerDigest(deviceLabel, deliveredAt) {
-  const prompt = `A package was delivered at "${deviceLabel}" at ${new Date(deliveredAt).toLocaleString()}. It has not been retrieved within the expected window. Write a short, warm, plain-language 1-2 sentence notification for a family caretaker, letting them know the package is still waiting and hasn't been picked up. Do not be alarming, just informative. Respond with ONLY the notification text — no headers, no titles, no markdown formatting, just the plain sentence(s).`;
+const TONE_STYLES = {
+  gentle: 'Write in a warm, friendly, reassuring tone — like a gentle nudge from a caring family member, not an alert.',
+  direct: 'Write in a direct, concise, professional tone — like a clean status alert, no fluff, no small talk.',
+  urgent: 'Write in an urgent tone appropriate for mobility or wellbeing monitoring — convey that a check-in is recommended, without being alarmist.'
+};
+
+async function generateCaretakerDigest(deviceLabel, deliveredAt, tone = 'gentle') {
+  const styleInstruction = TONE_STYLES[tone] || TONE_STYLES.gentle;
+  const prompt = `A package was delivered at "${deviceLabel}" at ${new Date(deliveredAt).toLocaleString()}. It has not been retrieved within the expected window. ${styleInstruction} Write an original 1-2 sentence notification for a caretaker in this style. Respond with ONLY the notification text — no headers, no titles, no markdown formatting.`;
 
   const command = new InvokeModelCommand({
     modelId: MODEL_ID,
