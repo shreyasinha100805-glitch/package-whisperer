@@ -20,7 +20,7 @@ function verifySignature(rawBody, signatureHeader) {
 }
 
 function deviceLabel(id) {
-  const known = { cam1: 'Front door' };
+  const known = { cam1: 'Front door', cam2: 'Back door', cam3: 'Garage' };
   return known[id] || id;
 }
 
@@ -40,7 +40,6 @@ async function handleEscalation(deviceId, deliveredAt) {
   }
 }
 
-// Shared processing logic — used by both the real signed webhook and the internal test trigger
 function processRingEvent(payload) {
   const deviceId = payload.data.attributes.source;
   const timestamp = payload.data.attributes.timestamp;
@@ -72,7 +71,6 @@ app.get('/link', (req, res) => res.send('Account link placeholder'));
 app.get('/home', (req, res) => res.send('App homepage placeholder'));
 app.post('/token', express.json(), (req, res) => res.json({ status: 'placeholder' }));
 
-// Manual resident self-resolution
 app.post('/api/resident/resolve', express.json(), (req, res) => {
   const deviceId = req.body.deviceId || 'cam1';
   manualResolve(deviceId);
@@ -80,9 +78,8 @@ app.post('/api/resident/resolve', express.json(), (req, res) => {
   res.status(200).json({ success: true });
 });
 
-// Test-only: simulate an incoming Ring webhook without needing a real signed request
 app.post('/api/test/trigger-webhook', express.json(), (req, res) => {
-  const deviceId = 'cam1';
+  const deviceId = req.body.deviceId || 'cam1';
   const payload = {
     data: {
       type: 'button_press',
@@ -95,7 +92,7 @@ app.post('/api/test/trigger-webhook', express.json(), (req, res) => {
 
 app.post('/api/test/force-digest', express.json(), async (req, res) => {
   try {
-    const deviceId = 'cam1';
+    const deviceId = req.body.deviceId || 'cam1';
     await handleEscalation(deviceId, Date.now());
     const events = getEvents();
     const latest = events[0];
@@ -214,12 +211,12 @@ app.get('/resident', (req, res) => {
       <link rel="stylesheet" href="/styles.css">
       <style>
         body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(circle at 50% 35%, #f7f3ea 0%, var(--paper) 60%); }
-        .wrap { width: 100%; max-width: 420px; padding: 24px; text-align: center; }
-        .plaque { background: white; border: 1px solid var(--line); border-radius: 6px; padding: 48px 32px; margin-bottom: 16px; position: relative; }
+        .wrap { width: 100%; max-width: 460px; padding: 24px; text-align: center; }
+        .plaque { background: white; border: 1px solid var(--line); border-radius: 6px; padding: 40px 32px; margin-bottom: 16px; position: relative; }
         .plaque.clear { border-top: 3px solid var(--sage); box-shadow: 0 0 60px -20px rgba(91,122,94,0.35); }
         .plaque.waiting { border-top: 3px solid var(--amber); box-shadow: 0 0 60px -20px rgba(201,138,44,0.4); }
         .location { font-size: 13px; color: var(--ink-soft); margin: 0 0 20px; letter-spacing: 0.02em; }
-        .status-word { font-family: 'Fraunces', serif; font-size: 34px; font-weight: 500; line-height: 1.15; margin: 0 0 12px; }
+        .status-word { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500; line-height: 1.15; margin: 0 0 12px; }
         .plaque.clear .status-word { color: var(--sage); }
         .plaque.waiting .status-word { color: var(--amber); }
         .support { color: var(--ink-soft); font-size: 15px; line-height: 1.5; margin: 0 0 20px; max-width: 32ch; margin-inline: auto; }
@@ -274,7 +271,7 @@ app.get('/caretaker', (req, res) => {
       <meta http-equiv="refresh" content="8">
       <link rel="stylesheet" href="/styles.css">
       <style>
-        .page { max-width: 780px; margin: 56px auto; padding: 0 24px; }
+        .page { max-width: 800px; margin: 56px auto; padding: 0 24px; }
         h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
         .sub { color: var(--ink-soft); font-size: 14px; margin: 0 0 28px; }
         .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
@@ -286,18 +283,12 @@ app.get('/caretaker', (req, res) => {
         .stat.escalated .num { color: var(--brick); }
 
         .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: white; border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; margin-bottom: 24px; }
-        .controls button {
-          font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 600;
-          border: none; border-radius: 4px; padding: 9px 16px; cursor: pointer; color: white;
-        }
-        #forceBtn { background: var(--amber); }
+        .controls button { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 600; border: none; border-radius: 4px; padding: 9px 16px; cursor: pointer; color: white; }
         #webhookBtn { background: var(--sky); }
+        #forceBtn { background: var(--amber); }
         .controls button:hover { opacity: 0.9; }
         .controls button:disabled { opacity: 0.6; cursor: default; }
-        .controls select {
-          font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; padding: 8px 10px;
-          border: 1px solid var(--line); border-radius: 4px; background: var(--paper); color: var(--ink);
-        }
+        .controls select { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--paper); color: var(--ink); }
         .controls .ok { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 3px; }
         .controls .ok.bedrock { background: rgba(63,108,134,0.12); color: var(--sky); }
         .controls .ok.fallback { background: rgba(107,106,98,0.12); color: var(--ink-soft); }
@@ -321,7 +312,7 @@ app.get('/caretaker', (req, res) => {
     <body>
       <div class="page">
         <h1>Caretaker log</h1>
-        <p class="sub">Front door activity \u00b7 <a href="/resident">See resident view</a></p>
+        <p class="sub">Live activity across all doors \u00b7 <a href="/resident">See resident view</a></p>
 
         <div class="stats">
           <div class="stat total"><span class="num">${stats.total}</span><span class="label">Total events</span></div>
@@ -330,6 +321,11 @@ app.get('/caretaker', (req, res) => {
         </div>
 
         <div class="controls">
+          <select id="deviceSelect">
+            <option value="cam1">Front door</option>
+            <option value="cam2">Back door</option>
+            <option value="cam3">Garage</option>
+          </select>
           <button id="webhookBtn" onclick="triggerWebhook()">Trigger test webhook</button>
           <div class="divider"></div>
           <button id="forceBtn" onclick="forceDigest()">Force Bedrock escalation</button>
@@ -350,9 +346,14 @@ app.get('/caretaker', (req, res) => {
       <script>
         async function triggerWebhook() {
           const btn = document.getElementById('webhookBtn');
+          const deviceId = document.getElementById('deviceSelect').value;
           btn.disabled = true;
           btn.textContent = 'Sending\u2026';
-          await fetch('/api/test/trigger-webhook', { method: 'POST' });
+          await fetch('/api/test/trigger-webhook', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ deviceId })
+          });
           setTimeout(() => location.reload(), 600);
         }
 
@@ -367,13 +368,18 @@ app.get('/caretaker', (req, res) => {
 
         async function forceDigest() {
           const btn = document.getElementById('forceBtn');
+          const deviceId = document.getElementById('deviceSelect').value;
           const result = document.getElementById('forceResult');
           btn.disabled = true;
           btn.textContent = 'Generating\u2026';
           result.textContent = '';
 
           try {
-            const res = await fetch('/api/test/force-digest', { method: 'POST' });
+            const res = await fetch('/api/test/force-digest', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ deviceId })
+            });
             const data = await res.json();
             result.textContent = data.success ? 'Mode: ' + data.source : 'Error: ' + data.error;
             result.className = data.source && data.source.includes('Bedrock') ? 'ok bedrock' : 'ok fallback';
