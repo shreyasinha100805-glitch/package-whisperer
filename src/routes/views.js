@@ -1,12 +1,30 @@
 // View & Navigation Routes
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const router = express.Router();
 
-const publicDir = path.join(__dirname, '../../public');
+function getPublicDir() {
+  const candidates = [
+    path.join(__dirname, '../../public'),
+    path.join(process.cwd(), 'public'),
+    path.join(__dirname, '../public'),
+    path.join(__dirname, 'public')
+  ];
+  for (const dir of candidates) {
+    if (fs.existsSync(dir)) return dir;
+  }
+  return path.join(process.cwd(), 'public');
+}
+
+const publicDir = getPublicDir();
 
 router.get('/', (req, res) => {
-  res.sendFile(path.join(publicDir, 'index.html'));
+  const file = path.join(publicDir, 'index.html');
+  if (fs.existsSync(file)) {
+    return res.sendFile(file);
+  }
+  res.redirect('/index.html');
 });
 
 router.get('/resident', (req, res) => {
@@ -21,9 +39,17 @@ router.get('/simulator', (req, res) => {
   res.redirect('/?view=simulator');
 });
 
+router.get('/architecture', (req, res) => {
+  res.redirect('/?view=architecture');
+});
+
 // Backward compatibility for legacy stylesheet link
 router.get('/styles.css', (req, res) => {
-  res.sendFile(path.join(publicDir, 'css', 'styles.css'));
+  const file = path.join(publicDir, 'css', 'styles.css');
+  if (fs.existsSync(file)) {
+    return res.sendFile(file);
+  }
+  res.redirect('/css/styles.css');
 });
 
 // Ring Account Linking Placeholders

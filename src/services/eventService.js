@@ -4,7 +4,9 @@ const path = require('path');
 const config = require('../config');
 const logger = require('../utils/logger');
 
-const DATA_FILE = path.join(__dirname, '../../data/events.json');
+const DATA_FILE = (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME)
+  ? path.join('/tmp', 'events.json')
+  : path.join(__dirname, '../../data/events.json');
 
 class EventService {
   constructor() {

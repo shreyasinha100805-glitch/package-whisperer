@@ -769,11 +769,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === '4') switchTab('architecture');
   });
 
-  // Handle URL route query parameter
+  // Handle URL route query parameter or pathname
   const params = new URLSearchParams(window.location.search);
   const viewParam = params.get('view');
-  if (viewParam && ['caretaker', 'resident', 'simulator', 'architecture'].includes(viewParam)) {
-    switchTab(viewParam);
+  const pathParam = window.location.pathname.replace(/^\//, '').split('/')[0];
+  const targetView = viewParam || (['caretaker', 'resident', 'simulator', 'architecture'].includes(pathParam) ? pathParam : null);
+  if (targetView && ['caretaker', 'resident', 'simulator', 'architecture'].includes(targetView)) {
+    switchTab(targetView);
   }
 
   // First fetch & start polling

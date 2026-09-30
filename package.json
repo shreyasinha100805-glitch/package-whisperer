@@ -1,12 +1,19 @@
 {
-  "name": "package",
+  "name": "package-whisperer",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Thoughtful Ring Caretaking powered by Amazon Bedrock",
+  "main": "api/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "node test.js"
   },
-  "keywords": [],
+  "keywords": [
+    "ring",
+    "bedrock",
+    "aws",
+    "hackathon",
+    "elderly-care"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
