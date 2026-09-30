@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Package Whisperer — Thoughtful Ring Caretaking</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/motion.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+</head>
+<body>
+  <!-- Atmospheric Ambient Background Light -->
+  <div class="ambient-glow">
+    <div class="ambient-orb orb-top-left"></div>
+    <div class="ambient-orb orb-top-right"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Top Navigation Bar -->
+    <header class="top-bar">
+      <div class="brand" onclick="switchTab('caretaker')" style="cursor: pointer;">
+        <div class="brand-icon">📦</div>
+        <div>
+          <h1 class="brand-title kinetic-gradient-text">Package Whisperer</h1>
+        </div>
+        <span class="brand-tag">Ring + Bedrock</span>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="tab-btn active" data-tab="caretaker">
+          <span>🛡️</span> <span>Caretaker Hub</span>
+        </button>
+        <button class="tab-btn" data-tab="resident">
+          <span>🏡</span> <span>Resident View</span>
+        </button>
+        <button class="tab-btn" data-tab="simulator">
+          <span>⚡</span> <span>Simulator &amp; Lab</span>
+        </button>
+        <button class="tab-btn" data-tab="architecture">
+          <span>✨</span> <span>How It Works</span>
+        </button>
+      </nav>
+
+      <div class="top-actions">
+        <div class="motion-mode-pill" id="motionModeBtn" onclick="MotionDesign.toggleMode()" title="Toggle Animation &amp; Kinetic Type Mode">
+          <span>✨</span> <span>Motion: Lively</span>
+        </div>
+        <div class="pill-badge" id="quietHoursPill">
+          <span class="status-dot pulse"></span> <span>Caretaker active</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <button class="btn-icon" id="soundToggleBtn" title="Ambient Sound">🔊</button>
+          <div class="audio-equalizer-wrap" id="audioEqualizer" title="Soundwave Visualizer">
+            <div class="eq-bar bar-1"></div>
+            <div class="eq-bar bar-2"></div>
+            <div class="eq-bar bar-3"></div>
+            <div class="eq-bar bar-4"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- TAB 1: CARETAKER HUB -->
+    <main id="tab-caretaker" class="tab-view">
+      <!-- Living Vector Porch Motion Stage -->
+      <section class="porch-stage-card" id="porchMotionStage">
+        <div class="porch-stage-header">
+          <div class="porch-stage-title-wrap">
+            <span style="font-size: 20px;">🏡</span>
+            <div>
+              <div style="font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: var(--ink);">
+                Living Porch Motion Stage
+              </div>
+              <div style="font-size: 11.5px; color: var(--ink-faint);">
+                Live vector diorama reflecting front door deliveries &amp; peaceful retrievals
+              </div>
+            </div>
+            <span class="porch-stage-badge" id="porchSkyBadge">☀️ Daytime Vigil</span>
+          </div>
+
+          <div class="porch-stage-controls">
+            <button class="porch-tool-btn primary" onclick="MotionDesign.PorchStage.playFullStory()" title="Play full delivery to pickup story animation">
+              <span>🎬</span> <span>Play Story</span>
+            </button>
+            <button class="porch-tool-btn" onclick="MotionDesign.PorchStage.dropPackage()" title="Simulate dropping parcel">
+              <span>📦</span> <span>Drop Box</span>
+            </button>
+            <button class="porch-tool-btn" onclick="MotionDesign.PorchStage.ringDoorbell()" title="Ring doorbell with sonar waves">
+              <span>🔔</span> <span>Ring Bell</span>
+            </button>
+            <button class="porch-tool-btn" onclick="MotionDesign.PorchStage.residentPickup()" title="Resident steps out and picks up package">
+              <span>🚶</span> <span>Resident Pick Up</span>
+            </button>
+            <button class="porch-tool-btn" onclick="MotionDesign.PorchStage.toggleSky()" title="Toggle Day and Night Sky">
+              <span>🌙</span> <span>Day / Night</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Animated Stage Viewport -->
+        <div class="porch-viewport" id="porchViewport">
+          <!-- Sky Elements -->
+          <div class="sky-layer">
+            <div class="celestial-sun"></div>
+            <div class="celestial-moon"></div>
+            <div class="star-cluster" id="porchStarCluster"></div>
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+          </div>
+
+          <!-- House Architecture Structure -->
+          <div class="porch-house-structure">
+            <div class="porch-roof"></div>
+            <div class="porch-wall"></div>
+
+            <!-- Warm Porch Lantern -->
+            <div class="porch-lantern-wrap">
+              <div class="lantern-bracket"></div>
+              <div class="lantern-housing">
+                <div class="lantern-glass">
+                  <div class="lantern-filament"></div>
+                </div>
+              </div>
+              <div class="lantern-glow-cone"></div>
+            </div>
+
+            <!-- Front Wooden Door -->
+            <div class="interior-glow-backdrop"></div>
+            <div class="porch-door-frame">
+              <div class="porch-door" id="porchFrontDoor">
+                <div class="door-window"></div>
+                <div class="door-panel"></div>
+                <div class="door-panel"></div>
+                <div class="door-handle"></div>
+              </div>
+            </div>
+
+            <!-- Ring Video Doorbell Device -->
+            <div class="ring-doorbell-device" onclick="MotionDesign.PorchStage.ringDoorbell()" title="Click to ring Ring doorbell">
+              <div class="ring-lens"></div>
+              <div class="ring-button" id="ringDoorbellBtn">
+                <div class="sonar-wave-container">
+                  <div class="sonar-ring ring-1" id="sonarRing1"></div>
+                  <div class="sonar-ring ring-2" id="sonarRing2"></div>
+                  <div class="sonar-ring ring-3" id="sonarRing3"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Welcome Doormat -->
+            <div class="porch-mat">Welcome</div>
+
+            <!-- Animated Parcel on Doorstep -->
+            <div class="animated-parcel" id="animatedPorchParcel" onclick="MotionDesign.PorchStage.residentPickup()" title="Click to pick up package!">
+              <div class="parcel-beacon">⏳ Waiting</div>
+              <div class="parcel-box">
+                <div class="parcel-tape"></div>
+                <div class="parcel-label"></div>
+              </div>
+            </div>
+
+            <!-- Animated Resident Character -->
+            <div class="resident-person" id="porchResident">
+              <div class="character-head"></div>
+              <div class="character-torso"></div>
+              <div class="character-legs">
+                <div class="character-leg"></div>
+                <div class="character-leg"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ground Baseline -->
+          <div class="porch-ground"></div>
+
+          <!-- Animated Delivery Van & Courier -->
+          <div class="delivery-van" id="porchDeliveryVan">
+            <div class="van-headlight"></div>
+            <div class="van-cabin-window"></div>
+            <div class="van-body">RING</div>
+            <div class="van-wheel back"></div>
+            <div class="van-wheel front"></div>
+          </div>
+
+          <div class="courier-person" id="porchCourier">
+            <div class="character-head">
+              <div class="character-cap"></div>
+            </div>
+            <div class="character-torso"></div>
+            <div class="character-legs">
+              <div class="character-leg"></div>
+              <div class="character-leg"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Delivery Hero Card (Animated SVG countdown ring) -->
+      <section class="active-deliveries-section" id="activeDeliveriesSection"></section>
+
+      <!-- Key Metrics Row -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Deliveries Watched</span>
+            <span class="stat-icon">📦</span>
+          </div>
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-sub">Total Ring delivery events</div>
+        </div>
+
+        <div class="stat-card sage">
+          <div class="stat-header">
+            <span class="stat-title">Self-Resolved</span>
+            <span class="stat-icon">🌱</span>
+          </div>
+          <div class="stat-value" id="statResolvedRate">100%</div>
+          <div class="stat-sub">Collected without caregiver alert</div>
+        </div>
+
+        <div class="stat-card brick">
+          <div class="stat-header">
+            <span class="stat-title">Caregiver Escalations</span>
+            <span class="stat-icon">📨</span>
+          </div>
+          <div class="stat-value" id="statEscalated">0</div>
+          <div class="stat-sub">AI digests sent after window</div>
+        </div>
+
+        <div class="stat-card amber">
+          <div class="stat-header">
+            <span class="stat-title">Active Windows</span>
+            <span class="stat-icon">⏳</span>
+          </div>
+          <div class="stat-value" id="statPending">0</div>
+          <div class="stat-sub">Parcels currently outside</div>
+        </div>
+      </section>
+
+      <!-- Sensitivity & Caregiver Settings Controls -->
+      <section class="controls-bar">
+        <div class="controls-group">
+          <span class="control-label">AI Caregiver Tone:</span>
+          <select id="toneSelect" class="select-custom" onchange="updateToneSetting()">
+            <option value="gentle">Warm &amp; Reassuring (Gentle family nudge)</option>
+            <option value="direct">Direct &amp; Concise (Clean status alert)</option>
+            <option value="urgent">Urgent / Wellbeing (Safety check-in)</option>
+          </select>
+        </div>
+
+        <div class="divider-vertical"></div>
+
+        <div class="controls-group">
+          <span class="control-label">Retrieval Window:</span>
+          <select id="windowSelect" class="select-custom" onchange="updateRetrievalWindowSetting()">
+            <option value="0.5">30 Seconds (Hackathon Live Demo)</option>
+            <option value="1">1 Minute (Quick Testing)</option>
+            <option value="15">15 Minutes (Short Porch Window)</option>
+            <option value="60">1 Hour (Standard Day Window)</option>
+            <option value="240" selected>4 Hours (Production Default)</option>
+          </select>
+        </div>
+
+        <div class="divider-vertical"></div>
+
+        <div class="controls-group">
+          <label class="switch-label">
+            <input type="checkbox" id="qhCheckbox" onchange="updateQuietHoursSetting()" checked>
+            <span>Quiet Hours (10 PM – 7 AM)</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Main Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Live Activity Timeline -->
+        <div class="content-card">
+          <div class="card-header">
+            <h2 class="card-title">Live Activity Timeline</h2>
+            <div class="filter-pills">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="retrieved">Retrieved</button>
+              <button class="filter-btn" data-filter="pending">Waiting</button>
+              <button class="filter-btn" data-filter="escalated">Escalated</button>
+              <button class="filter-btn" data-filter="held">Quiet</button>
+            </div>
+          </div>
+          <div class="events-list" id="eventsList">
+            <!-- Dynamic items rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Sidebar: Monitored Porch Cameras & Philosophy -->
+        <aside class="sidebar-col">
+          <div class="content-card">
+            <div class="card-header">
+              <h2 class="card-title">Connected Doors</h2>
+              <span class="brand-tag">3 Online</span>
+            </div>
+            <div style="padding: 16px 20px;" id="deviceList">
+              <!-- Rendered by app.js with live status -->
+            </div>
+          </div>
+
+          <div class="content-card" style="padding: 24px 26px; background: linear-gradient(135deg, #FFFFFF 0%, #FAF8F4 100%);">
+            <h3 style="font-family: var(--font-serif); font-size: 17px; margin-bottom: 8px; color: var(--ink);">Quiet Care Philosophy</h3>
+            <p style="font-size: 13.5px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 16px;">
+              Smart cameras flood families with false alarms for every passing delivery truck or animal. Package Whisperer protects the resident's autonomy first, keeping life quiet and calm until a check-in is genuinely helpful.
+            </p>
+            <button class="btn-secondary" style="font-size: 12.5px; width: 100%;" onclick="switchTab('simulator')">
+              ⚡ Open Event Simulator
+            </button>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- TAB 2: RESIDENT CALM VIEW (Ambient Wall / Tablet Screen) -->
+    <main id="tab-resident" class="tab-view" style="display: none;">
+      <div class="resident-screen-wrap" id="residentContainer">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </main>
+
+    <!-- TAB 3: SIMULATOR & LAB -->
+    <main id="tab-simulator" class="tab-view" style="display: none;">
+      <div class="sim-grid">
+        <!-- Event Simulator Column -->
+        <div class="sim-box">
+          <h2 class="sim-box-title"><span>⚡</span> Ring Event Simulator</h2>
+          <p class="sim-box-desc">
+            Simulate Ring doorbell and camera webhook events to inspect the event classifier and escalation state machine in real time.
+          </p>
+
+          <div style="margin-bottom: 18px;">
+            <label class="control-label" style="display: block; margin-bottom: 6px;">Target Door / Porch:</label>
+            <select id="simDeviceSelect" class="select-custom" style="width: 100%;">
+              <option value="cam1">Front door (cam1) — Main Porch</option>
+              <option value="cam2">Back door (cam2) — Garden Patio</option>
+              <option value="cam3">Garage porch (cam3) — Side Driveway</option>
+            </select>
+          </div>
+
+          <div class="sim-buttons-grid">
+            <div class="sim-btn-row" onclick="triggerSimulatorEvent('button_press')">
+              <div class="sim-btn-left">
+                <span class="sim-btn-icon">🔔</span>
+                <div>
+                  <div class="sim-btn-title">Simulate Doorbell Ring</div>
+                  <div class="sim-btn-sub">Classified as Delivery (High confidence) &bull; Starts quiet window</div>
+                </div>
+              </div>
+              <button class="sim-btn-trigger">Trigger</button>
+            </div>
+
+            <div class="sim-btn-row" onclick="triggerSimulatorEvent('courier_dropoff')">
+              <div class="sim-btn-left">
+                <span class="sim-btn-icon">📦</span>
+                <div>
+                  <div class="sim-btn-title">Simulate Courier Drop-off</div>
+                  <div class="sim-btn-sub">Human motion with 20s visit &bull; Classified as delivery visit pattern</div>
+                </div>
+              </div>
+              <button class="sim-btn-trigger">Trigger</button>
+            </div>
+
+            <div class="sim-btn-row" onclick="triggerSimulatorEvent('resident_retrieval')">
+              <div class="sim-btn-left">
+                <span class="sim-btn-icon">🚶</span>
+                <div>
+                  <div class="sim-btn-title">Simulate Resident Pickup</div>
+                  <div class="sim-btn-sub">Short human motion after delivery &bull; Self-resolves peacefully without alert</div>
+                </div>
+              </div>
+              <button class="sim-btn-trigger">Trigger</button>
+            </div>
+
+            <div class="sim-btn-row" onclick="triggerSimulatorEvent('animal_motion')">
+              <div class="sim-btn-left">
+                <span class="sim-btn-icon">🐾</span>
+                <div>
+                  <div class="sim-btn-title">Simulate Animal Motion</div>
+                  <div class="sim-btn-sub">Pet or wildlife passing by &bull; Filtered out, zero false alerts</div>
+                </div>
+              </div>
+              <button class="sim-btn-trigger">Trigger</button>
+            </div>
+
+            <div class="sim-btn-row" onclick="triggerSimulatorEvent('passerby_motion')">
+              <div class="sim-btn-left">
+                <span class="sim-btn-icon">🏃</span>
+                <div>
+                  <div class="sim-btn-title">Simulate Passerby (Long Motion)</div>
+                  <div class="sim-btn-sub">Motion lasting &gt;60s on sidewalk &bull; Filtered out as non-delivery</div>
+                </div>
+              </div>
+              <button class="sim-btn-trigger">Trigger</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Digest Inspector Column -->
+        <div class="sim-box">
+          <h2 class="sim-box-title"><span>🤖</span> Amazon Bedrock AI Generator</h2>
+          <p class="sim-box-desc">
+            Test prompt synthesis and generation with Amazon Bedrock (Claude Haiku 4.5) and resilient fallback execution.
+          </p>
+
+          <div style="display: flex; gap: 10px; margin-bottom: 18px;">
+            <button class="btn-amber" style="flex: 1; padding: 13px;" onclick="runBedrockTest()">
+              ✨ Generate Live AI Digest
+            </button>
+            <button class="btn-secondary" onclick="resetDemoData()" title="Reset to sample demo data">
+              🧹 Reset Data
+            </button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span class="control-label">Live Payload &amp; Response Inspector:</span>
+            <span style="font-size: 11px; color: var(--ink-faint);">Model: Claude Haiku 4.5</span>
+          </div>
+
+          <pre class="prompt-inspector" id="aiInspectorOutput">Ready to test. Click "Generate Live AI Digest" to invoke Amazon Bedrock...</pre>
+
+          <div style="margin-top: 20px; padding: 16px 20px; background: var(--surface-muted); border-radius: var(--radius-md); font-size: 13px; line-height: 1.6; border: 1px solid var(--border);">
+            <div style="margin-bottom: 4px;"><strong>AWS Bedrock Model:</strong> <span style="font-family: var(--font-mono); font-size: 11.5px;">us.anthropic.claude-haiku-4-5-20251001-v1:0</span></div>
+            <div><strong>Fail-safe Mechanism:</strong> Automatic tone-matched natural language fallback when daily token quota is reached (HTTP 429 Protection).</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- TAB 4: REDUCED & ANIMATED PIPELINE JOURNEY (Simple vs Tech Mode) -->
+    <main id="tab-architecture" class="tab-view" style="display: none;">
+      <div class="content-card pipeline-container">
+        <!-- Header Row with Mode Toggle -->
+        <div class="pipeline-header-row">
+          <div>
+            <h2 class="pipeline-title">How Package Whisperer Works</h2>
+            <p class="pipeline-subtitle">From Ring doorstep motion to calm caregiver check-ins.</p>
+          </div>
+
+          <!-- Mode Switcher Pill -->
+          <div class="pipeline-mode-toggle">
+            <button class="mode-btn active" id="btnModeSimple" onclick="setPipelineMode('simple')">
+              <span>🌿</span> <span>Simple Story</span>
+            </button>
+            <button class="mode-btn" id="btnModeTech" onclick="setPipelineMode('tech')">
+              <span>⚙️</span> <span>Technical Spec</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Animated Control Bar -->
+        <div class="pipeline-anim-bar">
+          <button class="anim-play-btn" id="btnPlayJourney" onclick="playPipelineJourney()">
+            <span id="playIcon">▶</span> <span id="playText">Play Animated Flow</span>
+          </button>
+          <div class="anim-status-indicator">
+            <div class="anim-pulse-box"></div>
+            <span id="animStatusText">Click "Play Animated Flow" or tap any step to inspect</span>
+          </div>
+        </div>
+
+        <!-- 4-Step Interactive Animated Journey Track -->
+        <div class="pipeline-journey-track">
+          <div class="pipeline-active-line" id="pipelineProgressLine">
+            <div class="pipeline-traveler-icon" id="pipelineTraveler">📦</div>
+          </div>
+
+          <!-- Step 1: Drop-off -->
+          <div class="pipe-step-card active-step" id="pipeStep1" onclick="focusPipelineStep(1)">
+            <div class="pipe-step-icon-halo">📦</div>
+            <span class="pipe-step-num">Step 1</span>
+            <h3 class="pipe-step-title">Doorstep Drop-off</h3>
+            <p class="pipe-step-desc">A courier leaves a parcel or rings the bell. The system acknowledges the arrival silently without blaring alarms.</p>
+            <div class="pipe-tech-detail">
+              <strong>POST /webhook</strong><br>
+              HMAC-SHA256 verified<br>
+              <code>classifyEvent.js</code> (confidence: high)
+            </div>
+          </div>
+
+          <!-- Step 2: Quiet Window -->
+          <div class="pipe-step-card" id="pipeStep2" onclick="focusPipelineStep(2)">
+            <div class="pipe-step-icon-halo">⏳</div>
+            <span class="pipe-step-num">Step 2</span>
+            <h3 class="pipe-step-title">Quiet Window</h3>
+            <p class="pipe-step-desc">The resident gets uninterrupted time to collect the package whenever ready. Picking it up cancels alerts completely.</p>
+            <div class="pipe-tech-detail">
+              <strong>windowService.js</strong><br>
+              Configurable timer (4h / 30s demo)<br>
+              Short visit (15s) = self-resolved
+            </div>
+          </div>
+
+          <!-- Step 3: Night Silence -->
+          <div class="pipe-step-card" id="pipeStep3" onclick="focusPipelineStep(3)">
+            <div class="pipe-step-icon-halo">🌙</div>
+            <span class="pipe-step-num">Step 3</span>
+            <h3 class="pipe-step-title">Night Guard</h3>
+            <p class="pipe-step-desc">Between 10 PM and 7 AM, notifications pause peacefully so remote family members sleep without midnight interruptions.</p>
+            <div class="pipe-tech-detail">
+              <strong>settings.js</strong><br>
+              <code>isInsideQuietHours()</code> check<br>
+              Holds escalation until morning
+            </div>
+          </div>
+
+          <!-- Step 4: AI Caregiver Digest -->
+          <div class="pipe-step-card" id="pipeStep4" onclick="focusPipelineStep(4)">
+            <div class="pipe-step-icon-halo">💌</div>
+            <span class="pipe-step-num">Step 4</span>
+            <h3 class="pipe-step-title">Thoughtful Nudge</h3>
+            <p class="pipe-step-desc">If still outside after the window, Amazon Bedrock writes a warm, empathetic note for the family based on chosen tone.</p>
+            <div class="pipe-tech-detail">
+              <strong>AWS Bedrock (Haiku 4.5)</strong><br>
+              Gentle / Direct / Urgent tone<br>
+              HTTP 429 quota fallback engine
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Client Scripts -->
+  <script src="/js/sound.js"></script>
+  <script src="/js/motion.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

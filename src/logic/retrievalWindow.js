@@ -1,70 +1,45 @@
-const pendingDeliveries = new Map();
+// Backwards-compatible facade forwarding to windowService
+const windowService = require('../services/windowService');
+const { getRetrievalWindowMs } = require('./settings');
 
-const RETRIEVAL_WINDOW_MS = 4 * 60 * 60 * 1000; // 4 hours
-const SHORT_VISIT_THRESHOLD_MS = 60 * 1000;
-
-function startRetrievalWindow(deviceId, deliveredAt, onEscalate) {
-  if (pendingDeliveries.has(deviceId)) {
-    clearTimeout(pendingDeliveries.get(deviceId).timer);
+function startRetrievalWindow(deviceId, deliveredAt = Date.now(), onEscalate, customWindowMs = null) {
+  if (typeof onEscalate === 'function') {
+    windowService.once('escalate', (data) => {
+      if (data.deviceId === deviceId) {
+        onEscalate(data.deviceId, data.deliveredAt);
+      }
+    });
   }
-
-  const timer = setTimeout(() => {
-    if (pendingDeliveries.has(deviceId)) {
-      pendingDeliveries.delete(deviceId);
-      onEscalate(deviceId, deliveredAt);
-    }
-  }, RETRIEVAL_WINDOW_MS);
-
-  pendingDeliveries.set(deviceId, { deliveredAt, timer });
+  return windowService.start(deviceId, deliveredAt, customWindowMs);
 }
 
-function checkRetrieval(deviceId, motionTimestamp, visitDurationMs) {
-  const pending = pendingDeliveries.get(deviceId);
-  if (!pending) return false;
-
-  const isShortVisit = visitDurationMs > 0 && visitDurationMs <= SHORT_VISIT_THRESHOLD_MS;
-  const isAfterDelivery = motionTimestamp > pending.deliveredAt;
-
-  if (isShortVisit && isAfterDelivery) {
-    clearTimeout(pending.timer);
-    pendingDeliveries.delete(deviceId);
-    return true;
-  }
-
-  return false;
+function checkRetrieval(deviceId, motionTimestamp = Date.now(), visitDurationMs = 0) {
+  return windowService.checkRetrieval(deviceId, motionTimestamp, visitDurationMs);
 }
 
 function manualResolve(deviceId) {
-  const pending = pendingDeliveries.get(deviceId);
-  if (!pending) return false;
-  clearTimeout(pending.timer);
-  pendingDeliveries.delete(deviceId);
-  return true;
+  return windowService.resolve(deviceId);
 }
 
-module.exports = { startRetrievalWindow, checkRetrieval, manualResolve, RETRIEVAL_WINDOW_MS };
-function checkRetrieval(deviceId, motionTimestamp, visitDurationMs) {
-  const pending = pendingDeliveries.get(deviceId);
-  if (!pending) return false; // no delivery was waiting on this device
-
-  const isShortVisit = visitDurationMs > 0 && visitDurationMs <= SHORT_VISIT_THRESHOLD_MS;
-  const isAfterDelivery = motionTimestamp > pending.deliveredAt;
-
-  if (isShortVisit && isAfterDelivery) {
-    clearTimeout(pending.timer);
-    pendingDeliveries.delete(deviceId);
-    return true; // retrieved
-  }
-
-  return false;
+function fastForward(deviceId) {
+  return windowService.fastForward(deviceId);
 }
 
-function manualResolve(deviceId) {
-  const pending = pendingDeliveries.get(deviceId);
-  if (!pending) return false;
-  clearTimeout(pending.timer);
-  pendingDeliveries.delete(deviceId);
-  return true;
+function getPendingDeliveries() {
+  return windowService.getAllPending();
 }
 
-module.exports = { startRetrievalWindow, checkRetrieval, manualResolve, RETRIEVAL_WINDOW_MS };
+function isPending(deviceId) {
+  return windowService.isPending(deviceId);
+}
+
+module.exports = {
+  startRetrievalWindow,
+  checkRetrieval,
+  manualResolve,
+  fastForward,
+  getPendingDeliveries,
+  isPending,
+  SHORT_VISIT_THRESHOLD_MS: windowService.SHORT_VISIT_THRESHOLD_MS,
+  windowService
+};

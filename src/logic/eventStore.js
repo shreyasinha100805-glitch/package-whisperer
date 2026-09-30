@@ -1,28 +1,43 @@
-const events = [];
+// Backwards-compatible facade forwarding to eventService
+const eventService = require('../services/eventService');
+const config = require('../config');
 
 function logEvent(entry) {
-  events.unshift({ ...entry, timestamp: entry.timestamp || Date.now() });
-  if (events.length > 50) events.pop();
+  return eventService.log(entry);
 }
 
-function getEvents() {
-  return events;
+function getEvents(filter) {
+  return eventService.getAll(filter);
 }
 
 function getLatestStatusByDevice() {
-  const latest = {};
-  for (const e of events) {
-    if (!latest[e.deviceId]) latest[e.deviceId] = e;
-  }
-  return latest;
+  return eventService.getLatestStatusByDevice();
 }
 
 function getStats() {
-  const total = events.length;
-  const escalated = events.filter(e => e.status === 'escalated').length;
-  const retrieved = events.filter(e => e.status === 'retrieved').length;
-  const resolvedRate = total > 0 ? Math.round((retrieved / total) * 100) : 0;
-  return { total, escalated, retrieved, resolvedRate };
+  return eventService.getStats();
 }
 
-module.exports = { logEvent, getEvents, getLatestStatusByDevice, getStats };
+function clearEvents() {
+  return eventService.clear();
+}
+
+function seedDemoEvents() {
+  return eventService.seedDemoEvents();
+}
+
+function deviceLabel(id) {
+  return eventService.getDeviceLabel(id);
+}
+
+module.exports = {
+  logEvent,
+  getEvents,
+  getLatestStatusByDevice,
+  getStats,
+  clearEvents,
+  seedDemoEvents,
+  deviceLabel,
+  DEVICE_LABELS: config.devices,
+  eventService
+};
