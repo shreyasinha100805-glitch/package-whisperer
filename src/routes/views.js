@@ -1,99 +1,11 @@
 // View & Navigation Routes
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
+const indexHtml = require('../views/indexHtml');
 const router = express.Router();
 
-function getPublicDir() {
-  const candidates = [
-    path.join(__dirname, '../../public'),
-    path.join(process.cwd(), 'public'),
-    path.join(__dirname, '../public'),
-    path.join(__dirname, 'public'),
-    path.resolve('public'),
-    path.join('/var/task/public')
-  ];
-  for (const dir of candidates) {
-    if (fs.existsSync(path.join(dir, 'index.html'))) return dir;
-  }
-  return path.join(process.cwd(), 'public');
-}
-
-const publicDir = getPublicDir();
-
-function resolveIndexFile() {
-  const candidates = [
-    path.join(publicDir, 'index.html'),
-    path.join(process.cwd(), 'public', 'index.html'),
-    path.join(__dirname, '../../public/index.html'),
-    path.join('/var/task/public/index.html'),
-    path.resolve('public/index.html'),
-    path.resolve('index.html')
-  ];
-  for (const f of candidates) {
-    if (fs.existsSync(f)) return f;
-  }
-  return null;
-}
-
-router.get('/', (req, res) => {
-  const file = resolveIndexFile();
-  if (file) {
-    try {
-      const content = fs.readFileSync(path.resolve(file), 'utf8');
-      return res.type('text/html').send(content);
-    } catch (e) {
-      // Fallback below
-    }
-  }
-  res.status(200).send('<!DOCTYPE html><html><body><h1>Package Whisperer</h1><p>Initializing...</p></body></html>');
-});
-
-router.get('/index.html', (req, res) => {
-  const file = resolveIndexFile();
-  if (file) {
-    try {
-      const content = fs.readFileSync(path.resolve(file), 'utf8');
-      return res.type('text/html').send(content);
-    } catch (e) {
-      // Fallback
-    }
-  }
-  res.redirect('/');
-});
-
-router.get('/landing', (req, res) => {
-  res.redirect('/');
-});
-
-router.get('/resident', (req, res) => {
-  res.redirect('/?view=resident');
-});
-
-router.get('/caretaker', (req, res) => {
-  res.redirect('/?view=caretaker');
-});
-
-router.get('/simulator', (req, res) => {
-  res.redirect('/?view=simulator');
-});
-
-router.get('/architecture', (req, res) => {
-  res.redirect('/?view=architecture');
-});
-
-// Backward compatibility for legacy stylesheet link
-router.get('/styles.css', (req, res) => {
-  const file = path.join(publicDir, 'css', 'styles.css');
-  if (fs.existsSync(file)) {
-    try {
-      const content = fs.readFileSync(file, 'utf8');
-      return res.type('text/css').send(content);
-    } catch (e) {
-      // Fallback
-    }
-  }
-  res.redirect('/css/styles.css');
+router.get(['/', '/index.html', '/landing', '/resident', '/caretaker', '/simulator', '/architecture'], (req, res) => {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.status(200).send(indexHtml);
 });
 
 // Ring Account Linking Placeholders
