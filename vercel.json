@@ -2,6 +2,10 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/landing",
+      "destination": "/index.html"
+    },
+    {
       "source": "/caretaker",
       "destination": "/index.html"
     },
