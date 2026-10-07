@@ -39,15 +39,25 @@ function resolveIndexFile() {
 router.get('/', (req, res) => {
   const file = resolveIndexFile();
   if (file) {
-    return res.sendFile(path.resolve(file));
+    try {
+      const content = fs.readFileSync(path.resolve(file), 'utf8');
+      return res.type('text/html').send(content);
+    } catch (e) {
+      // Fallback below
+    }
   }
-  res.status(200).send('<h1>Package Whisperer</h1><p>Initializing...</p>');
+  res.status(200).send('<!DOCTYPE html><html><body><h1>Package Whisperer</h1><p>Initializing...</p></body></html>');
 });
 
 router.get('/index.html', (req, res) => {
   const file = resolveIndexFile();
   if (file) {
-    return res.sendFile(path.resolve(file));
+    try {
+      const content = fs.readFileSync(path.resolve(file), 'utf8');
+      return res.type('text/html').send(content);
+    } catch (e) {
+      // Fallback
+    }
   }
   res.redirect('/');
 });
@@ -76,7 +86,12 @@ router.get('/architecture', (req, res) => {
 router.get('/styles.css', (req, res) => {
   const file = path.join(publicDir, 'css', 'styles.css');
   if (fs.existsSync(file)) {
-    return res.sendFile(file);
+    try {
+      const content = fs.readFileSync(file, 'utf8');
+      return res.type('text/css').send(content);
+    } catch (e) {
+      // Fallback
+    }
   }
   res.redirect('/css/styles.css');
 });

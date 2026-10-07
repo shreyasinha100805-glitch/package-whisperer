@@ -23,6 +23,22 @@ let processRingEventFn = null;
 router.setEventProcessor = (fn) => { processRingEventFn = fn; };
 
 /**
+ * Root API information
+ */
+router.get('/', (req, res) => {
+  res.json({
+    success: true,
+    service: 'Package Whisperer API',
+    endpoints: {
+      health: '/api/health',
+      status: '/api/status',
+      events: '/api/events',
+      pending: '/api/pending'
+    }
+  });
+});
+
+/**
  * Health check & diagnostic status
  */
 router.get('/health', (req, res) => {

@@ -2,6 +2,15 @@
 const logger = require('../utils/logger');
 
 function notFoundHandler(req, res) {
+  if (req.path.startsWith('/api') || req.path.startsWith('/webhook')) {
+    return res.status(404).json({
+      success: false,
+      error: {
+        code: 'NOT_FOUND',
+        message: `Cannot ${req.method} ${req.path}`
+      }
+    });
+  }
   if (req.accepts('html') && req.path !== '/' && req.path !== '/index.html') {
     return res.redirect('/');
   }

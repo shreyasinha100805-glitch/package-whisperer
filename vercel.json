@@ -2,6 +2,10 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
       "source": "/landing",
       "destination": "/index.html"
     },
@@ -48,7 +52,7 @@
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "public/**"
+      "includeFiles": "{public/**,index.html}"
     }
   }
 }
