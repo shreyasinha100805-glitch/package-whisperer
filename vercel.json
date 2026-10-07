@@ -1,5 +1,12 @@
 {
   "version": 2,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/landing",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -22,12 +29,28 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/styles.css",
-      "destination": "/css/styles.css"
+      "source": "/landing",
+      "destination": "/index.html"
     },
     {
-      "source": "/(.*)",
+      "source": "/caretaker",
       "destination": "/index.html"
+    },
+    {
+      "source": "/resident",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/simulator",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/architecture",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/styles.css",
+      "destination": "/css/styles.css"
     }
   ],
   "functions": {
