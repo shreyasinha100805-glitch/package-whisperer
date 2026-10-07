@@ -9,22 +9,47 @@ function getPublicDir() {
     path.join(__dirname, '../../public'),
     path.join(process.cwd(), 'public'),
     path.join(__dirname, '../public'),
-    path.join(__dirname, 'public')
+    path.join(__dirname, 'public'),
+    path.resolve('public'),
+    path.join('/var/task/public')
   ];
   for (const dir of candidates) {
-    if (fs.existsSync(dir)) return dir;
+    if (fs.existsSync(path.join(dir, 'index.html'))) return dir;
   }
   return path.join(process.cwd(), 'public');
 }
 
 const publicDir = getPublicDir();
 
-router.get('/', (req, res) => {
-  const file = path.join(publicDir, 'index.html');
-  if (fs.existsSync(file)) {
-    return res.sendFile(file);
+function resolveIndexFile() {
+  const candidates = [
+    path.join(publicDir, 'index.html'),
+    path.join(process.cwd(), 'public', 'index.html'),
+    path.join(__dirname, '../../public/index.html'),
+    path.join('/var/task/public/index.html'),
+    path.resolve('public/index.html'),
+    path.resolve('index.html')
+  ];
+  for (const f of candidates) {
+    if (fs.existsSync(f)) return f;
   }
-  res.redirect('/index.html');
+  return null;
+}
+
+router.get('/', (req, res) => {
+  const file = resolveIndexFile();
+  if (file) {
+    return res.sendFile(path.resolve(file));
+  }
+  res.status(200).send('<h1>Package Whisperer</h1><p>Initializing...</p>');
+});
+
+router.get('/index.html', (req, res) => {
+  const file = resolveIndexFile();
+  if (file) {
+    return res.sendFile(path.resolve(file));
+  }
+  res.redirect('/');
 });
 
 router.get('/landing', (req, res) => {

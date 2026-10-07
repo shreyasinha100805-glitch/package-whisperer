@@ -2,7 +2,7 @@
 const logger = require('../utils/logger');
 
 function notFoundHandler(req, res) {
-  if (req.accepts('html')) {
+  if (req.accepts('html') && req.path !== '/' && req.path !== '/index.html') {
     return res.redirect('/');
   }
   res.status(404).json({
