@@ -53,6 +53,9 @@
   "functions": {
     "api/index.js": {
       "includeFiles": "{public/**,index.html}"
+    },
+    "server.js": {
+      "includeFiles": "{public/**,index.html}"
     }
   }
 }
