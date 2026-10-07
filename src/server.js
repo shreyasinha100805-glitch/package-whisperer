@@ -2,9 +2,9 @@
  * Package Whisperer — Server Entry Point
  * Built for Amazon Developer Hackathon (Ring Track + AWS Bedrock Integration)
  */
-const { createApp, processRingEvent, handleEscalation } = require('./src/app');
-const config = require('./src/config');
-const logger = require('./src/utils/logger');
+const { createApp, processRingEvent, handleEscalation } = require('./app');
+const config = require('./config');
+const logger = require('./utils/logger');
 
 const app = createApp();
 
@@ -13,7 +13,7 @@ app.processRingEvent = processRingEvent;
 app.handleEscalation = handleEscalation;
 app.createApp = createApp;
 
-// Only start the HTTP listener when executed directly (not when imported as a serverless function)
+// Only start the HTTP listener when executed directly
 if (require.main === module) {
   const server = app.listen(config.port, () => {
     logger.banner({
@@ -39,15 +39,4 @@ if (require.main === module) {
   app.server = server;
 }
 
-// Export as a standard 2-argument HTTP request listener (req, res).
-// Express 5 has app.length === 3 which causes AWS Lambda / Vercel Node runtime
-// to misinterpret it as a callback-style handler (event, context, callback),
-// causing FUNCTION_INVOCATION_FAILED.
-module.exports = (req, res) => {
-  return app(req, res);
-};
-
-module.exports.app = app;
-module.exports.processRingEvent = processRingEvent;
-module.exports.handleEscalation = handleEscalation;
-module.exports.createApp = createApp;
+module.exports = app;

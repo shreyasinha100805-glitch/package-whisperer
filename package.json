@@ -2,9 +2,8 @@
   "name": "package-whisperer",
   "version": "1.0.0",
   "description": "Thoughtful Ring Caretaking powered by Amazon Bedrock",
-  "main": "api/index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node src/server.js",
     "test": "node test.js"
   },
   "keywords": [
