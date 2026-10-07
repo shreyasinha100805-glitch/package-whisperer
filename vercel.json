@@ -2,35 +2,11 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/landing",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/caretaker",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/resident",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/simulator",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/architecture",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/api",
+      "source": "/api/(.*)",
       "destination": "/api/index.js"
     },
     {
-      "source": "/api/(.*)",
+      "source": "/api",
       "destination": "/api/index.js"
     },
     {
@@ -48,14 +24,15 @@
     {
       "source": "/styles.css",
       "destination": "/css/styles.css"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "functions": {
     "api/index.js": {
-      "includeFiles": "{public/**,index.html}"
-    },
-    "server.js": {
-      "includeFiles": "{public/**,index.html}"
+      "includeFiles": "public/**"
     }
   }
 }

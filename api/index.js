@@ -12,7 +12,20 @@ app.createApp = createApp;
 // to misinterpret it as a callback-style handler (event, context, callback),
 // causing FUNCTION_INVOCATION_FAILED.
 module.exports = (req, res) => {
-  return app(req, res);
+  try {
+    return app(req, res);
+  } catch (err) {
+    console.error('Unhandled Lambda Error in api/index:', err);
+    if (!res.headersSent) {
+      res.status(500).json({
+        success: false,
+        error: {
+          code: 'INTERNAL_SERVER_ERROR',
+          message: err.message || 'Serverless invocation error'
+        }
+      });
+    }
+  }
 };
 
 module.exports.app = app;

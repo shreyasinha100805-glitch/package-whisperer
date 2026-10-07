@@ -120,7 +120,7 @@ function createApp() {
   app.use(requestLogger);
 
   // 3. Static assets
-  app.use(express.static(path.join(__dirname, '../public')));
+  app.use(express.static(path.join(__dirname, '../public'), { index: false }));
 
   // 4. Mount route modules
   app.use('/webhook', webhookRoutes);

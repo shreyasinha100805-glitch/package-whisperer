@@ -33,9 +33,28 @@ router.get('/', (req, res) => {
       health: '/api/health',
       status: '/api/status',
       events: '/api/events',
-      pending: '/api/pending'
+      pending: '/api/pending',
+      diag: '/api/diag'
     }
   });
+});
+
+const fs = require('fs');
+const path = require('path');
+router.get('/diag', (req, res) => {
+  try {
+    res.json({
+      success: true,
+      cwd: process.cwd(),
+      dirname: __dirname,
+      cwdFiles: fs.existsSync(process.cwd()) ? fs.readdirSync(process.cwd()) : [],
+      hasIndex: fs.existsSync(path.join(process.cwd(), 'index.html')),
+      hasPublicIndex: fs.existsSync(path.join(process.cwd(), 'public/index.html')),
+      hasVarTaskPublic: fs.existsSync('/var/task/public/index.html')
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message, stack: err.stack });
+  }
 });
 
 /**
