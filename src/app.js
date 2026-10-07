@@ -9,7 +9,7 @@ const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
 
 const windowService = require('./services/windowService');
 const eventService = require('./services/eventService');
-const { generateDigest } = require('./services/aiService');
+const { processEscalationDigest, generateDigest } = require('./services/aiService');
 const { classifyEvent } = require('./logic/classifyEvent');
 const { getTone, isInsideQuietHours } = require('./logic/settings');
 
@@ -22,50 +22,11 @@ const recentMotionByDevice = {};
 
 /**
  * Handles package escalation when retrieval window timer elapses.
+ * Sub-Process 3 (DFD Level 2): Generate digest pipeline
+ * Flow: 3.1 Check quiet hours -> (Hold until morning / 3.2 Select tone -> 3.3 Call Bedrock / 3.4 Fallback) -> 3.5 Log result -> D1 Events
  */
 async function handleEscalation(deviceId, deliveredAt) {
-  const label = eventService.getDeviceLabel(deviceId);
-  const tone = getTone();
-
-  if (isInsideQuietHours()) {
-    logger.quiet(`Quiet hours active (10 PM – 7 AM). Holding escalation for "${label}" until morning.`);
-    eventService.log({
-      deviceId,
-      status: 'held',
-      reason: 'Quiet hours active (10 PM – 7 AM). Alert paused until morning.',
-      digest: null
-    });
-    // Check again in 30 minutes
-    setTimeout(() => handleEscalation(deviceId, deliveredAt), 30 * 60 * 1000);
-    return;
-  }
-
-  logger.info(`Escalation triggered for "${label}" (Tone: ${tone})`);
-  try {
-    const result = await generateDigest(label, deliveredAt, tone);
-    const digestText = result.text || result.toString();
-
-    eventService.log({
-      deviceId,
-      status: 'escalated',
-      reason: 'Package not picked up within designated window',
-      digest: digestText,
-      source: result.source,
-      tone: result.tone || tone,
-      latencyMs: result.latencyMs
-    });
-  } catch (err) {
-    logger.error('Failed to generate escalation digest:', err);
-    const fallback = `A package delivered at ${label} on ${new Date(deliveredAt).toLocaleTimeString()} has not been picked up yet. Please check in when you have a moment.`;
-    eventService.log({
-      deviceId,
-      status: 'escalated',
-      reason: 'Package not picked up within designated window',
-      digest: fallback,
-      source: 'fallback',
-      tone
-    });
-  }
+  return processEscalationDigest(deviceId, deliveredAt);
 }
 
 /**

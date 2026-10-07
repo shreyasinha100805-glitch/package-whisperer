@@ -1,7 +1,7 @@
 // Enhanced Frontend Application Logic for Package Whisperer
 
 const AppState = {
-  activeTab: 'caretaker',
+  activeTab: 'landing',
   statusFilter: 'all',
   settings: {},
   stats: {},
@@ -487,6 +487,17 @@ async function runBedrockTest() {
   const deviceId = document.getElementById('simDeviceSelect')?.value || 'cam1';
   const tone = document.getElementById('toneSelect')?.value || 'gentle';
   const outputEl = document.getElementById('aiInspectorOutput');
+  const previewCard = document.getElementById('digestCardPreview');
+  const previewText = document.getElementById('previewDigestText');
+  const previewSource = document.getElementById('previewSource');
+  const previewMeta = document.getElementById('previewMeta');
+  const btn = document.getElementById('btnGenerateDigest');
+
+  if (btn) {
+    btn.disabled = true;
+    btn.style.opacity = '0.75';
+    btn.innerHTML = '<span>⏳</span> <span>Generating with Claude Haiku 4.5...</span>';
+  }
 
   if (outputEl) {
     outputEl.textContent = '✨ Connecting to Amazon Bedrock (Claude Haiku 4.5)...';
@@ -499,11 +510,26 @@ async function runBedrockTest() {
       body: JSON.stringify({ deviceId, tone })
     });
     const data = await res.json();
+
+    if (previewCard && previewText && data.digest) {
+      previewCard.style.display = 'block';
+      previewText.textContent = data.digest;
+      if (previewSource) {
+        const isBedrock = data.source && data.source.includes('Bedrock');
+        previewSource.textContent = data.source || 'AWS Bedrock';
+        previewSource.className = isBedrock ? 'digest-source-pill bedrock' : 'digest-source-pill fallback';
+      }
+      if (previewMeta) {
+        previewMeta.innerHTML = `<span><strong>Tone:</strong> ${data.tone || tone}</span> &bull; <span><strong>Model:</strong> ${data.model || 'Claude Haiku 4.5'}</span> &bull; <span><strong>Latency:</strong> ${data.latencyMs || 0}ms</span>`;
+      }
+    }
+
     if (outputEl) {
+      const fullJson = JSON.stringify(data, null, 2);
       if (window.MotionDesign?.KineticType) {
-        window.MotionDesign.KineticType.typewrite(outputEl, JSON.stringify(data, null, 2), 10);
+        window.MotionDesign.KineticType.typewrite(outputEl, fullJson, 6);
       } else {
-        outputEl.textContent = JSON.stringify(data, null, 2);
+        outputEl.textContent = fullJson;
       }
     }
     showToast(`Digest generated (${data.source})`, '✨');
@@ -511,6 +537,27 @@ async function runBedrockTest() {
   } catch (err) {
     if (outputEl) outputEl.textContent = 'Error: ' + err.message;
     showToast('AI call failed: ' + err.message, '⚠️');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.innerHTML = '<span>✨</span> <span>Generate Live AI Digest</span>';
+    }
+  }
+}
+
+function copyInspectorOutput() {
+  const el = document.getElementById('aiInspectorOutput');
+  if (!el) return;
+  const text = el.textContent || '';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Payload copied to clipboard!', '📋');
+    }).catch(() => {
+      showToast('Copied payload text', '📋');
+    });
+  } else {
+    showToast('Payload text ready in box', '📋');
   }
 }
 
@@ -574,9 +621,32 @@ async function resetDemoData() {
   }
 }
 
+function setupLandingObserver() {
+  const stepsSection = document.getElementById('landingStepsSection');
+  if (!stepsSection) return;
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          stepsSection.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+
+    observer.observe(stepsSection);
+  } else {
+    stepsSection.classList.add('is-visible');
+  }
+}
+
 function switchTab(tabName) {
   window.soundFx?.playClick();
   AppState.activeTab = tabName;
+
+  // Toggle page-landing on body so vibrant styles only affect landing page
+  document.body.classList.toggle('page-landing', tabName === 'landing');
 
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tab === tabName);
@@ -585,6 +655,17 @@ function switchTab(tabName) {
   document.querySelectorAll('.tab-view').forEach(view => {
     view.style.display = view.id === `tab-${tabName}` ? 'block' : 'none';
   });
+
+  if (tabName === 'landing') {
+    // Stagger setup of intersection observer on landing view
+    setTimeout(setupLandingObserver, 60);
+  }
+
+  // Update browser URL without reload so back/refresh works
+  const newUrl = tabName === 'landing' ? '/' : `/?view=${tabName}`;
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState({ tab: tabName }, '', newUrl);
+  }
 
   render();
 }
@@ -763,6 +844,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
     if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+    if (e.key === '0' || e.key === '`') switchTab('landing');
     if (e.key === '1') switchTab('caretaker');
     if (e.key === '2') switchTab('resident');
     if (e.key === '3') switchTab('simulator');
@@ -773,9 +855,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const viewParam = params.get('view');
   const pathParam = window.location.pathname.replace(/^\//, '').split('/')[0];
-  const targetView = viewParam || (['caretaker', 'resident', 'simulator', 'architecture'].includes(pathParam) ? pathParam : null);
-  if (targetView && ['caretaker', 'resident', 'simulator', 'architecture'].includes(targetView)) {
+  const knownTabs = ['landing', 'caretaker', 'resident', 'simulator', 'architecture'];
+  const targetView = viewParam || (knownTabs.includes(pathParam) ? pathParam : null);
+  if (targetView && knownTabs.includes(targetView)) {
     switchTab(targetView);
+  } else {
+    // Default / route lands on the vibrant landing page
+    switchTab('landing');
   }
 
   // First fetch & start polling

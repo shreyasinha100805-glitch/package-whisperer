@@ -27,6 +27,10 @@ router.get('/', (req, res) => {
   res.redirect('/index.html');
 });
 
+router.get('/landing', (req, res) => {
+  res.redirect('/');
+});
+
 router.get('/resident', (req, res) => {
   res.redirect('/?view=resident');
 });

@@ -18,7 +18,7 @@
   <div class="app-container">
     <!-- Top Navigation Bar -->
     <header class="top-bar">
-      <div class="brand" onclick="switchTab('caretaker')" style="cursor: pointer;">
+      <div class="brand" onclick="switchTab('landing')" style="cursor: pointer;">
         <div class="brand-icon">📦</div>
         <div>
           <h1 class="brand-title kinetic-gradient-text">Package Whisperer</h1>
@@ -27,7 +27,10 @@
       </div>
 
       <nav class="nav-tabs">
-        <button class="tab-btn active" data-tab="caretaker">
+        <button class="tab-btn active" data-tab="landing">
+          <span>✨</span> <span>Overview</span>
+        </button>
+        <button class="tab-btn" data-tab="caretaker">
           <span>🛡️</span> <span>Caretaker Hub</span>
         </button>
         <button class="tab-btn" data-tab="resident">
@@ -37,7 +40,7 @@
           <span>⚡</span> <span>Simulator &amp; Lab</span>
         </button>
         <button class="tab-btn" data-tab="architecture">
-          <span>✨</span> <span>How It Works</span>
+          <span>📐</span> <span>How It Works</span>
         </button>
       </nav>
 
@@ -60,8 +63,189 @@
       </div>
     </header>
 
+    <!-- TAB 0: LANDING PAGE (/ route — Visually striking, colorful & animated) -->
+    <main id="tab-landing" class="tab-view">
+      <!-- Animated Gradient Hero Section -->
+      <section class="landing-hero-section">
+        <!-- Floating Ambient Gradient Orbs (Amber #C98A2C, Sage #5B7A5E, Sky Blue #3F6C86) -->
+        <div class="landing-orbs-container" aria-hidden="true">
+          <div class="landing-orb orb-amber"></div>
+          <div class="landing-orb orb-sage"></div>
+          <div class="landing-orb orb-sky"></div>
+        </div>
+
+        <div class="landing-hero-content">
+          <!-- Colorful Pill Badge -->
+          <div class="landing-pill-badge">
+            <span class="landing-pill-dot"></span>
+            <span class="landing-pill-text">Ring IoT + AWS Bedrock Hackathon</span>
+            <span class="landing-pill-tag">Calm Technology</span>
+          </div>
+
+          <!-- Staggered Animated Headline -->
+          <h1 class="landing-headline" aria-label="Some things don't need an alarm">
+            <span class="landing-word" style="--w-i: 1">Some</span>
+            <span class="landing-word" style="--w-i: 2">things</span>
+            <span class="landing-word highlight-sage" style="--w-i: 3">don't</span>
+            <span class="landing-word highlight-sage" style="--w-i: 4">need</span>
+            <span class="landing-word" style="--w-i: 5">an</span>
+            <span class="landing-word highlight-amber underline-drift" style="--w-i: 6">alarm.</span>
+          </h1>
+
+          <!-- Subtitle with colorful accents from existing palette -->
+          <p class="landing-subhead">
+            Traditional smart cameras trigger <span class="accent-brick">alarm fatigue</span> with constant rings and motion pings. 
+            <strong>Package Whisperer</strong> gives residents an unhurried <span class="accent-sage">peaceful retrieval window</span>, 
+            only escalating with <span class="accent-sky">Amazon Bedrock AI digests</span> when check-in assistance is genuinely helpful.
+          </p>
+
+          <!-- Primary Interactive Action Cards (Resident View vs Caretaker View with lively hover states) -->
+          <div class="landing-action-cards">
+            <!-- Card 1: See Resident View -->
+            <div class="landing-card card-resident" onclick="switchTab('resident')" role="button" tabindex="0">
+              <div class="card-glow-halo"></div>
+              <div class="card-badge badge-sage">
+                <span>🏡</span> <span>For In-Home Resident</span>
+              </div>
+              <div class="card-icon-wrap icon-sage">
+                <span class="card-main-icon">🌿</span>
+              </div>
+              <h3 class="card-title">See Resident View</h3>
+              <p class="card-desc">
+                Tranquil, zero-stress porch display. An ambient chime and tactile "Got it!" button preserve autonomy with zero fear-inducing alerts.
+              </p>
+              <div class="card-features">
+                <span class="feature-tag">🍃 Zero Alarm Fatigue</span>
+                <span class="feature-tag">✋ One-Touch Resolution</span>
+              </div>
+              <div class="card-cta cta-sage">
+                <span>Explore Resident View</span>
+                <span class="cta-arrow">→</span>
+              </div>
+            </div>
+
+            <!-- Card 2: See Caretaker View -->
+            <div class="landing-card card-caretaker" onclick="switchTab('caretaker')" role="button" tabindex="0">
+              <div class="card-glow-halo"></div>
+              <div class="card-badge badge-sky">
+                <span>🛡️</span> <span>For Remote Caregivers</span>
+              </div>
+              <div class="card-icon-wrap icon-sky">
+                <span class="card-main-icon">📨</span>
+              </div>
+              <h3 class="card-title">See Caretaker Hub</h3>
+              <p class="card-desc">
+                Live delivery timeline, 10 PM–7 AM quiet hours guard, and Bedrock Claude Haiku 4.5 digests tailored to caregiver tone preferences.
+              </p>
+              <div class="card-features">
+                <span class="feature-tag">🌙 Quiet Hours Guard</span>
+                <span class="feature-tag">🤖 Bedrock Tone Synthesis</span>
+              </div>
+              <div class="card-cta cta-sky">
+                <span>Explore Caretaker Hub</span>
+                <span class="cta-arrow">→</span>
+              </div>
+            </div>
+
+            <!-- Card 3: Interactive Event Simulator -->
+            <div class="landing-card card-simulator" onclick="switchTab('simulator')" role="button" tabindex="0">
+              <div class="card-glow-halo"></div>
+              <div class="card-badge badge-amber">
+                <span>⚡</span> <span>Interactive Demo Lab</span>
+              </div>
+              <div class="card-icon-wrap icon-amber">
+                <span class="card-main-icon">🔬</span>
+              </div>
+              <h3 class="card-title">Test Event Simulator</h3>
+              <p class="card-desc">
+                Simulate Ring doorbell rings, courier drop-offs, resident collections, and test live Amazon Bedrock tone escalation synthesis.
+              </p>
+              <div class="card-features">
+                <span class="feature-tag">🔔 Doorbell &amp; Motion</span>
+                <span class="feature-tag">🧠 Live AI Generator</span>
+              </div>
+              <div class="card-cta cta-amber">
+                <span>Launch Simulator Lab</span>
+                <span class="cta-arrow">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: The Three "How It Works" Numbered Steps (Animates on Scroll with Drawing Line) -->
+      <section class="landing-steps-section" id="landingStepsSection">
+        <div class="steps-header">
+          <span class="steps-eyebrow">Architecture &amp; Flow</span>
+          <h2 class="steps-heading">How Package Whisperer Works</h2>
+          <p class="steps-sub">Three thoughtful stages designed to protect resident dignity and prevent caregiver burnout.</p>
+        </div>
+
+        <div class="landing-steps-track">
+          <!-- The Colored Connecting Line that draws itself between the steps -->
+          <div class="steps-draw-line" id="stepsDrawLine" aria-hidden="true"></div>
+
+          <!-- Step 1: Doorstep Drop-off (Amber #C98A2C) -->
+          <div class="landing-step-card step-amber" data-step="1">
+            <div class="step-num-bubble">01</div>
+            <div class="step-icon-box">📦</div>
+            <h3 class="step-card-title">Doorstep Drop-off</h3>
+            <p class="step-card-text">
+              Ring camera or doorbell detects a package arrival. The system verifies the HMAC signature and logs the delivery <span class="highlight-amber">silently</span>.
+            </p>
+            <div class="step-tag-pill">Ring Webhook + Classifier</div>
+          </div>
+
+          <!-- Step 2: Peaceful Window (Sage #5B7A5E) -->
+          <div class="landing-step-card step-sage" data-step="2">
+            <div class="step-num-bubble">02</div>
+            <div class="step-icon-box">⏳</div>
+            <h3 class="step-card-title">Peaceful Retrieval Window</h3>
+            <p class="step-card-text">
+              The resident gets an unhurried window (4 hours default, or 30s in demo) to collect packages. Resident pickup <span class="highlight-sage">self-resolves</span> with zero alarms sent.
+            </p>
+            <div class="step-tag-pill">Autonomy Preserved</div>
+          </div>
+
+          <!-- Step 3: Thoughtful AI Escalation (Sky Blue #3F6C86) -->
+          <div class="landing-step-card step-sky" data-step="3">
+            <div class="step-num-bubble">03</div>
+            <div class="step-icon-box">🤖</div>
+            <h3 class="step-card-title">Thoughtful AI Escalation</h3>
+            <p class="step-card-text">
+              Only if uncollected past the window does <span class="highlight-sky">Amazon Bedrock</span> generate an empathetic, tone-tuned notification for the caregiver, respecting quiet hours.
+            </p>
+            <div class="step-tag-pill">Claude Haiku 4.5 AI</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Callout Band: Quick Mode Switch & Hackathon Tech Stack -->
+      <section class="landing-stack-banner">
+        <div class="stack-banner-left">
+          <div class="stack-badge">Built For Hackathon</div>
+          <div class="stack-title">Ring Developer Track + Amazon Bedrock Runtime</div>
+          <div class="stack-chips">
+            <span class="chip">Ring Webhook HMAC-SHA256</span>
+            <span class="chip">Amazon Bedrock (Claude Haiku 4.5)</span>
+            <span class="chip">SigV4 Request Dispatch</span>
+            <span class="chip">DFD Level 1 &amp; Level 2 Spec</span>
+            <span class="chip">Zero Alarm Fatigue</span>
+          </div>
+        </div>
+        <div class="stack-banner-actions">
+          <button class="btn-primary" onclick="switchTab('caretaker')">
+            Open Caretaker Hub →
+          </button>
+          <button class="btn-secondary" onclick="switchTab('resident')">
+            Open Resident Screen
+          </button>
+        </div>
+      </section>
+    </main>
+
     <!-- TAB 1: CARETAKER HUB -->
-    <main id="tab-caretaker" class="tab-view">
+    <main id="tab-caretaker" class="tab-view" style="display: none;">
       <!-- Living Vector Porch Motion Stage -->
       <section class="porch-stage-card" id="porchMotionStage">
         <div class="porch-stage-header">
@@ -407,17 +591,32 @@
           </p>
 
           <div style="display: flex; gap: 10px; margin-bottom: 18px;">
-            <button class="btn-amber" style="flex: 1; padding: 13px;" onclick="runBedrockTest()">
-              ✨ Generate Live AI Digest
+            <button class="btn-amber" id="btnGenerateDigest" style="flex: 1; padding: 13px;" onclick="runBedrockTest()">
+              <span>✨</span> <span>Generate Live AI Digest</span>
             </button>
             <button class="btn-secondary" onclick="resetDemoData()" title="Reset to sample demo data">
-              🧹 Reset Data
+              <span>🧹</span> <span>Reset Data</span>
             </button>
+          </div>
+
+          <!-- Formatted Digest Card Preview (Shows complete writing prominently) -->
+          <div class="digest-card-preview" id="digestCardPreview" style="display: none;">
+            <div class="digest-preview-header">
+              <span class="digest-badge" id="previewBadge">💌 Generated Caretaker Digest</span>
+              <span class="digest-source-pill" id="previewSource">AWS Bedrock</span>
+            </div>
+            <p class="digest-preview-text" id="previewDigestText"></p>
+            <div class="digest-preview-meta" id="previewMeta"></div>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <span class="control-label">Live Payload &amp; Response Inspector:</span>
-            <span style="font-size: 11px; color: var(--ink-faint);">Model: Claude Haiku 4.5</span>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="btn-secondary" style="font-size: 11px; padding: 3px 8px;" onclick="copyInspectorOutput()" title="Copy entire writing to clipboard">
+                📋 Copy
+              </button>
+              <span style="font-size: 11px; color: var(--ink-faint);">Model: Claude Haiku 4.5</span>
+            </div>
           </div>
 
           <pre class="prompt-inspector" id="aiInspectorOutput">Ready to test. Click "Generate Live AI Digest" to invoke Amazon Bedrock...</pre>
