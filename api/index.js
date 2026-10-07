@@ -8,33 +8,44 @@ app.processRingEvent = processRingEvent;
 app.handleEscalation = handleEscalation;
 app.createApp = createApp;
 
-// Set of static view routes
-const HTML_ROUTES = new Set([
-  '/',
-  '',
-  '/index.html',
-  '/landing',
-  '/caretaker',
-  '/resident',
-  '/simulator',
-  '/architecture'
-]);
-
 // Export as a standard 2-argument HTTP request listener (req, res).
 module.exports = (req, res) => {
   try {
     const rawUrl = req.url || '';
     const pathname = rawUrl.split('?')[0];
 
-    // If root or any view route is requested, serve in-memory HTML immediately
-    if (HTML_ROUTES.has(pathname)) {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
-      return res.end(indexHtml);
+    // API & Webhook routes are handled by Express
+    if (
+      pathname.startsWith('/api/') ||
+      pathname.startsWith('/webhook') ||
+      pathname === '/token' ||
+      pathname === '/link'
+    ) {
+      return app(req, res);
     }
 
-    return app(req, res);
+    // Root API ping
+    if (pathname === '/api' || pathname === '/api/') {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+      return res.end(JSON.stringify({
+        success: true,
+        service: 'Package Whisperer API',
+        endpoints: {
+          health: '/api/health',
+          status: '/api/status',
+          events: '/api/events',
+          pending: '/api/pending'
+        }
+      }));
+    }
+
+    // For all other routes (/, /landing, /caretaker, /resident, /simulator, /architecture, etc.),
+    // immediately serve the in-memory application HTML with 200 OK!
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    return res.end(indexHtml);
   } catch (err) {
     console.error('Unhandled Lambda Error in api/index:', err);
     if (!res.headersSent) {
