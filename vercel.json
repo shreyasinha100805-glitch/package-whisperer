@@ -26,8 +26,12 @@
       "destination": "/css/styles.css"
     },
     {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/api/index.js"
+      "destination": "/index.html"
     }
   ],
   "functions": {

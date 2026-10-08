@@ -17,7 +17,8 @@ router.get('/link', (req, res) => {
 });
 
 router.get('/home', (req, res) => {
-  res.redirect('/');
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.status(200).send(indexHtml);
 });
 
 router.post('/token', (req, res) => {

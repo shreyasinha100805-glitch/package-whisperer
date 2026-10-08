@@ -1,5 +1,6 @@
 // Global Error Handler & 404 Middleware
 const logger = require('../utils/logger');
+const indexHtml = require('../views/indexHtml');
 
 function notFoundHandler(req, res) {
   if (req.path.startsWith('/api') || req.path.startsWith('/webhook')) {
@@ -11,8 +12,8 @@ function notFoundHandler(req, res) {
       }
     });
   }
-  if (req.accepts('html') && req.path !== '/' && req.path !== '/index.html') {
-    return res.redirect('/');
+  if (req.accepts('html')) {
+    return res.status(200).type('html').send(indexHtml);
   }
   res.status(404).json({
     success: false,
