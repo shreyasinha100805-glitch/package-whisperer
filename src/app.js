@@ -134,10 +134,14 @@ function createApp() {
   return app;
 }
 
-module.exports = {
+const app = createApp();
+
+Object.assign(app, {
   createApp,
   processRingEvent,
   handleEscalation,
   windowService,
   eventService
-};
+});
+
+module.exports = app;

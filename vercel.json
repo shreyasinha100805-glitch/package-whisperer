@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/index.html"
+      "destination": "/api/index.js"
     },
     {
       "source": "/api/(.*)",
@@ -27,36 +27,27 @@
     },
     {
       "source": "/landing",
-      "destination": "/index.html"
+      "destination": "/api/index.js"
     },
     {
       "source": "/resident",
-      "destination": "/index.html"
+      "destination": "/api/index.js"
     },
     {
       "source": "/caretaker",
-      "destination": "/index.html"
+      "destination": "/api/index.js"
     },
     {
       "source": "/simulator",
-      "destination": "/index.html"
+      "destination": "/api/index.js"
     },
     {
       "source": "/architecture",
-      "destination": "/index.html"
+      "destination": "/api/index.js"
     },
     {
       "source": "/home",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/styles.css",
-      "destination": "/css/styles.css"
+      "destination": "/api/index.js"
     }
-  ],
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "public/**"
-    }
-  }
+  ]
 }
