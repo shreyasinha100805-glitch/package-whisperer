@@ -26,12 +26,32 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/styles.css",
-      "destination": "/css/styles.css"
+      "source": "/landing",
+      "destination": "/index.html"
     },
     {
-      "source": "/(.*)",
-      "destination": "/api/index.js"
+      "source": "/resident",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/caretaker",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/simulator",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/architecture",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/home",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/styles.css",
+      "destination": "/css/styles.css"
     }
   ],
   "functions": {
