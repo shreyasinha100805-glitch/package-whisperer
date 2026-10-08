@@ -662,7 +662,7 @@ function switchTab(tabName) {
   }
 
   // Update browser URL without reload so back/refresh works
-  const newUrl = tabName === 'landing' ? '/' : `/?view=${tabName}`;
+  const newUrl = `/${tabName}`;
   if (window.history && window.history.replaceState) {
     window.history.replaceState({ tab: tabName }, '', newUrl);
   }

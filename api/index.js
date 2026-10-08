@@ -40,6 +40,13 @@ module.exports = (req, res) => {
       }));
     }
 
+    // Root path redirect to /landing
+    if (pathname === '/' || pathname === '') {
+      res.statusCode = 307;
+      res.setHeader('Location', '/landing');
+      return res.end();
+    }
+
     // For all other routes (/, /landing, /caretaker, /resident, /simulator, /architecture, etc.),
     // immediately serve the in-memory application HTML with 200 OK!
     res.statusCode = 200;
