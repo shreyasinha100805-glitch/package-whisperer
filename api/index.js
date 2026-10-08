@@ -40,11 +40,12 @@ module.exports = (req, res) => {
       }));
     }
 
-    // Root path redirect to /landing
+    // Serve the application directly at the root path.
     if (pathname === '/' || pathname === '') {
-      res.statusCode = 307;
-      res.setHeader('Location', '/landing');
-      return res.end();
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+      return res.end(indexHtml);
     }
 
     // For all other routes (/, /landing, /caretaker, /resident, /simulator, /architecture, etc.),
