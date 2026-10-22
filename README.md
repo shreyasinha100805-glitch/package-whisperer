@@ -1,4 +1,4 @@
-# Package Whisperer 📦
+# Package Whisperer 
 > **Thoughtful, Dignified Caretaking for Ring — Powered by Amazon Bedrock**  
 > *Built by Shreya Sinha for the **Ring Track** of the Amazon Developer Hackathon (Build, Ship, Shape)*
 
@@ -10,7 +10,7 @@
 
 ---
 
-## 🙋‍♀️ Why I Built Package Whisperer
+## Why I Built Package Whisperer
 
 Smart video doorbells are incredible pieces of technology, but if you've ever watched an elderly family member live with one, you quickly notice something frustrating: **they are ridiculously loud, intrusive, and anxiety-inducing.**
 
@@ -26,7 +26,7 @@ Package Whisperer integrates directly with **Ring Doorbell & Camera webhooks**. 
 
 ---
 
-## 📦 What It Actually Does (The 5-Step Pipeline)
+##  What It Actually Does (The 5-Step Pipeline)
 
 Here is how the entire system works from front door to caregiver notification:
 
@@ -38,7 +38,7 @@ Here is how the entire system works from front door to caregiver notification:
 
 ---
 
-## 🛠️ Built With
+## Built With
 
 I built Package Whisperer around the **Ring Track** requirements and paired it with AWS intelligence:
 
@@ -53,7 +53,7 @@ I built Package Whisperer around the **Ring Track** requirements and paired it w
 
 ---
 
-## 💬 My Product Feedback for the Teams Building Ring & AWS Bedrock
+## My Product Feedback for the Teams Building Ring & AWS Bedrock
 
 *As part of the Build, Ship, Shape submission, here is my honest, detailed developer feedback based on building this app from scratch:*
 
@@ -102,29 +102,7 @@ I built Package Whisperer around the **Ring Track** requirements and paired it w
 
 ---
 
-## 🎥 My 3-Minute Video Pitch (Script & Walkthrough)
-
-*Here is the exact pitch script I followed for my 3-minute submission video:*
-
-* **[0:00 - 0:40] The Problem:**  
-  *"Hi judges! Today, millions of seniors live independently at home. But traditional smart doorbells create a huge dilemma: every single courier drop-off triggers loud chimes inside the house and frantic push notifications on their children's phones. The senior feels startled and hurried, and the caregiver gets overwhelmed with alert fatigue. Smart home tech is supposed to bring peace of mind, but right now, it causes anxiety."*
-
-* **[0:40 - 1:10] Who It's For & My Solution:**  
-  *"I built **Package Whisperer** for the **Ring Track** to change that. Package Whisperer turns your Ring doorbell from an intrusive alarm into a quiet, respectful guardian. It gives the resident a peaceful 4-hour grace period to bring packages inside on their own schedule without any chimes, and only notifies family caregivers if a package has truly been left outside."*
-
-* **[1:10 - 2:20] Live Working Demo:**  
-  *"Let's see it in action:  
-  1. In my **Simulator**, a courier arrives. Ring sends a signed webhook, and my backend confirms the courier drop-off pattern.  
-  2. Look at the **Resident Screen** on this tablet. Notice how there's no siren? Just a peaceful ambient card: 'A delivery is resting on the porch.' If the resident brings it in, they tap 'Got it, thank you!', hear a soothing tone, and their independence score goes up.  
-  3. Now let's fast forward the timer to simulate an uncollected package. Notice that it checks **Quiet Hours** first—if it's night, alerts are held until morning.  
-  4. When escalation is needed, it calls **Amazon Bedrock** running Claude Haiku 4.5. On the **Caretaker Hub**, look at the notification: instead of a scary red alert, Bedrock crafted an empathetic, human message: 'A package from 2:15 PM is still resting outside. Whenever you have a quiet moment, give mom a friendly check-in.' Seamless, warm, and thoughtful."*
-
-* **[2:20 - 3:00] Wrap-up & Impact:**  
-  *"Package Whisperer includes complete HMAC webhook verification, rate-limit fallback protection, customizable tone settings, and zero hardcoded secrets. It proves that smart home AI can protect peace of mind and honor resident dignity. Thank you!"*
-
----
-
-## 🔒 Security & API Key Safety
+## Security & API Key Safety
 
 I followed strict security practices to keep credentials safe:
 - **Zero API Keys in Source Code:** All secrets are read dynamically from `process.env`.
@@ -134,19 +112,19 @@ I followed strict security practices to keep credentials safe:
 
 ---
 
-## 🖥️ The User Interfaces I Built
+## The User Interfaces I Built
 
 Package Whisperer includes 3 responsive web views that can be opened in any browser:
 
 | Interface | URL | What It Does |
 |---|---|---|
-| **🛡️ Caretaker Hub** | `http://localhost:3000/caretaker` | Live delivery cards with active countdown timers, independence rate metrics (%), AI tone selector (*Gentle*, *Direct*, *Urgent*), and delivery event logs. |
-| **🏡 Resident Calm Screen** | `http://localhost:3000/resident` | Designed for an in-home wall tablet. Features soft ambient colors, zero distractions, a single tap *"Got it, thank you!"* confirmation button, and calming Web Audio synthesizer chords. |
-| **⚡ Testing Simulator** | `http://localhost:3000/simulator` | Interactive testing console. Let judges trigger Ring doorbell presses, courier drop-offs, resident pickups, or fast-forward delivery timers with one click. |
+| ** Caretaker Hub** | `http://localhost:3000/caretaker` | Live delivery cards with active countdown timers, independence rate metrics (%), AI tone selector (*Gentle*, *Direct*, *Urgent*), and delivery event logs. |
+| **Resident Calm Screen** | `http://localhost:3000/resident` | Designed for an in-home wall tablet. Features soft ambient colors, zero distractions, a single tap *"Got it, thank you!"* confirmation button, and calming Web Audio synthesizer chords. |
+| ** Testing Simulator** | `http://localhost:3000/simulator` | Interactive testing console. Let judges trigger Ring doorbell presses, courier drop-offs, resident pickups, or fast-forward delivery timers with one click. |
 
 ---
 
-## 🚀 How to Run It Locally
+##  How to Run It Locally
 
 ### 1. Clone the repo and install dependencies
 ```bash
@@ -177,7 +155,7 @@ Open **`http://localhost:3000`** in your browser.
 
 ---
 
-## 🧪 Testing
+##Testing
 
 I wrote automated unit and integration tests covering the entire pipeline:
 ```bash
@@ -192,7 +170,7 @@ The test suite validates:
 
 ---
 
-## 📡 Key API Endpoints
+## Key API Endpoints
 
 - `GET /api/status` — Live system state, active delivery countdowns, and resident stats.
 - `POST /api/resident/resolve` — Resident marks a package as collected.
@@ -202,7 +180,3 @@ The test suite validates:
 - `POST /webhook` — Ring Webhook ingestion endpoint with HMAC-SHA256 signature verification.
 
 ---
-
-## 📄 License
-
-ISC License. Built for the Amazon Developer Hackathon: *Build, Ship, Shape*.
